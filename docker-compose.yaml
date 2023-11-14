@@ -1,0 +1,13 @@
+version: "1.0"
+
+services:
+  front:
+    image: 'front_transfer_money:latest'
+    build: card-transfer-master
+    ports:
+      - 3000:3000
+  back:
+    image: 'back_transfer_money:latest'
+    build: MoneyTransfer/
+    ports:
+      - 5500:5500
