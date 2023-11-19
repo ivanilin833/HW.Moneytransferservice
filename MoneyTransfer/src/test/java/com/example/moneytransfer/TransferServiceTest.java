@@ -68,7 +68,7 @@ class TransferServiceTest {
     @Test
     void testConfirmSuccess() {
         when(validator.validate(confirmForm)).thenReturn(Collections.emptySet());
-
+        when(repository.isValidKey(confirmForm.getOperationId(), confirmForm.getCode())).thenReturn(true);
         // Act
         String result = transferService.confirm(confirmForm);
 
@@ -95,6 +95,7 @@ class TransferServiceTest {
 
         // Act
         var transferId = transferService.transfer(transferForm);
+        when(repository.isValidKey(transferId, "0000")).thenReturn(true);
         var testIdConfirmFom = new ConfirmForm(transferId, "0000");
 
         //Assert

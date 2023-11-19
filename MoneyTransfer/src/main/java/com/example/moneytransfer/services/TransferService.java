@@ -32,6 +32,7 @@ public class TransferService {
         isValid(form);
         try {
             result = repository.createOperation(form).getId().toString();
+            repository.saveTransactionKey(result, getCheckMsg());
         } catch (RuntimeException exception) {
             throw new ServerError("Error transfer " + exception.getMessage());
         }
@@ -44,7 +45,7 @@ public class TransferService {
     public String confirm(ConfirmForm form) {
         isValid(form);
         try {
-            if (!form.getCode().equals("0000")) {
+            if (!repository.isValidKey(form.getOperationId(), form.getCode())) {
                 throw new ConfirmationFail("Invalid operation confirmation code");
             }
         } catch (ConfirmationFail confirmationFail) {
@@ -63,4 +64,7 @@ public class TransferService {
         }
     }
 
+    private String getCheckMsg() {
+        return "0000";
+    }
 }
